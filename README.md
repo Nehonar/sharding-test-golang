@@ -86,7 +86,7 @@ curl "http://localhost:8080/get-user?user=user-test"
 
 ## Educational Purpose
 
-This project is part of a portfolio designed to demonstrate:
+This project is part of a portfolio designed to demostrate:
 
 - Software architecture skills
 
