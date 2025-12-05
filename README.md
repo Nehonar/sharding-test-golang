@@ -260,7 +260,7 @@ This level details the internal structure of the Sharded User Service.
 
 ---
 
-## 📘 ADR #1 — Using Hash Mod N for Sharding
+## ADR #1 — Using Hash Mod N for Sharding
 
 ### Status
 Accepted — educational purpose.
