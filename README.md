@@ -125,7 +125,52 @@ Shard (PostgreSQL Instance)
 - **Shard**: Executes SQL queries against its assigned PostgreSQL instance.  
 - **Database**: Stores user records for the shard.
 
-
 ---
 
+## C4 Model — Level 1: System Context
 
+### Purpose
+The system provides user creation and retrieval through a sharded PostgreSQL backend.
+
+### Primary Actor
+- **Client (User or External Application)**  
+  Sends HTTP requests to create or retrieve a user.
+
+### System Under Design (SUD)
+- **Sharded User Service**  
+  A Go-based backend responsible for distributing user data across multiple database shards.
+
+### External Systems
+- **PostgreSQL Shards**  
+  Independent database instances acting as storage nodes.  
+  The service routes users deterministically to one of these shards.
+
+### High-Level Context Diagram (text form)
+
+```sql
+             +------------------------+
+             |        Client          |
+             |  (Browser/Postman/cURL)|
+             +-----------+------------+
+                         |
+            HTTP Requests (Create/Get User)
+                         |
+             +-----------v------------+
+             |  Sharded User Service  |
+             |  (System Under Design) |
+             +-----------+------------+
+                         |
+    +-------------+----------------------------+
+    |       |            |              |      |
+    |       |            |              |      |
+    +-------v----+ +-----v------+ +-----v------+
+    | PostgreSQL | | PostgreSQL | | PostgreSQL |
+    |   Shard 0  | |   Shard 1  | |   Shard 2  |
+    +------------+ +------------+ +------------+
+       (Data is deterministically distributed)
+```
+
+### Summary
+- The client interacts only with the Sharded User Service.
+- The service abstracts all storage logic and shard selection.
+- The underlying PostgreSQL instances hold the actual data.
