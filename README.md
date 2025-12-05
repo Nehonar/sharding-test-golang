@@ -174,3 +174,84 @@ The system provides user creation and retrieval through a sharded PostgreSQL bac
 - The client interacts only with the Sharded User Service.
 - The service abstracts all storage logic and shard selection.
 - The underlying PostgreSQL instances hold the actual data.
+
+---
+
+## 🧩 C4 Model — Level 2: Container Diagram
+
+This level details the internal structure of the Sharded User Service.
+
+### Containers within the System
+
+- **API (HTTP Server / Main Application)**
+  - Exposes HTTP endpoints.
+  - Initializes all dependencies (handlers, services, router, shards).
+
+- **Handler Layer**
+  - Parses HTTP requests (JSON, query params).
+  - Validates basic inputs.
+  - Delegates execution to the Service layer.
+
+- **Service Layer (Business Logic)**
+  - Contains domain logic (e.g., create user, get user).
+  - Validates domain rules.
+  - Selects the appropriate shard via the Router.
+  - An orchestrator between Handler and Storage layers.
+
+- **Router (Shard Selector)**
+  - Applies hashing logic (`SHA-256 % number_of_shards`).
+  - Routes each operation to its correct shard.
+  - Encapsulates the sharding strategy.
+
+- **Shard (Storage Implementation)**
+  - Executes SQL statements.
+  - Connected to one physical PostgreSQL instance.
+  - Represents one node in the sharded architecture.
+
+- **PostgreSQL Instances**
+  - Independent databases.
+  - Each shard stores only the portion of data assigned to it.
+
+---
+
+### Container-level Diagram (text form)
+
+```sql
++-------------------------------------------------------------+
+|                 Sharded User Service (Go)                   |
+|                                                             |
+|     +------------------+       +---------------+            |
+|     |     API Layer    | ----> | Handler Layer |            |
+|     +------------------+       +---------------+            |
+|                                        |                    |
+|                                        v                    |
+|                                +---------------+            |
+|                                | Service Layer |            |
+|                                +---------------+            |
+|                                        |                    |
+|                                        v                    |
+|                               +-----------------+           |
+|                               |      Router     |           |
+|                               |  (Shard Picker) |           |
+|                               +-----------------+           |
+|                                      / | \                  |
+|                                     /  |  \                 |
+|                                    v   v   v                |
+|                       +---------+ +---------+ +---------+   |
+|                       | Shard 0 | | Shard 1 | | Shard 2 |   |
+|                       +---------+ +---------+ +---------+   |
+|                            |           |           |        |
+|                            v           v           v        |
+|                        PostgreSQL  PostgreSQL  PostgreSQL   |
+|                           DB0         DB1         DB2       |
++-------------------------------------------------------------+
+```
+
+### Summary
+
+- The API exposes endpoints but contains no business logic.  
+- The Handler is only responsible for HTTP concerns.  
+- The Service contains all domain rules and orchestrates operations.  
+- The Router encapsulates the sharding strategy.  
+- Each Shard is a thin wrapper around SQL operations.  
+- PostgreSQL instances are isolated, independent storage nodes.
