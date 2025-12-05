@@ -34,7 +34,9 @@ Each layer has a single responsibility:
 
 Sharding is implemented by applying SHA-256 to the username and taking the modulo of the number of shards:
 
+```Go
 shardIndex = hash(username)[0] % numShards
+```
 
 This guarantees that the same username always maps to the same shard.
 
@@ -102,7 +104,7 @@ This project is part of a portfolio designed to demostrate:
 
 ## 6-Box Architecture Diagram
 
-```bash
+```sql
         Client
           ↓
       API Handler
@@ -255,3 +257,86 @@ This level details the internal structure of the Sharded User Service.
 - The Router encapsulates the sharding strategy.  
 - Each Shard is a thin wrapper around SQL operations.  
 - PostgreSQL instances are isolated, independent storage nodes.
+
+---
+
+## 📘 ADR #1 — Using Hash Mod N for Sharding
+
+### Status
+Accepted — educational purpose.
+
+---
+
+### Context
+The project requires distributing user data across multiple PostgreSQL instances.  
+A deterministic strategy is needed so that the same username always maps to the same shard.
+
+The goal is **simplicity and clarity**, not production-grade scalability.
+
+---
+
+### Decision
+Use SHA-256 hashing on the username and take the modulo of the number of shards:
+
+```Go
+shardIndex = hash(username)[0] % numShards
+```
+
+The `Router` component encapsulates this logic and exposes a simple interface:
+
+- `SaveUser(ctx, username, pwd)`
+- `GetUser(ctx, username)`
+
+---
+
+### Rationale
+This choice provides:
+
+- Extremely simple implementation  
+- Deterministic mapping of users to shards  
+- Easy to understand and teach  
+- No external dependencies  
+- Good for prototyping distributed storage concepts  
+
+---
+
+### Consequences
+
+#### Positive
+- Fast and deterministic routing  
+- Minimal code complexity  
+- Easy to test and reason about  
+- Good starting point for learning sharding concepts  
+
+#### Negative
+- **Not scalable** for production systems  
+- Adding/removing shards requires redistributing all data  
+- No automatic load balancing  
+- No shard hot-spot protection  
+- No replica support  
+
+---
+
+### Alternatives Considered
+1. **Consistent Hashing**
+   - Much better scalability
+   - Avoids full data redistribution
+   - Used by large-scale systems (Kafka, DynamoDB, Cassandra, Redis Cluster)
+   - Rejected because it adds complexity beyond the scope of this project.
+
+2. **Lookup Tables (User → Shard)**
+   - Flexible and dynamic
+   - Requires a central metadata service
+   - Harder to maintain in small demo projects
+
+---
+
+### Decision Summary
+Hash Mod N is chosen **deliberately** as a simple, clear, educational approach to demonstrate:
+
+- routing  
+- multi-shard design  
+- system layering  
+- database distribution  
+
+Future projects in this portfolio will explore more advanced strategies such as **consistent hashing** and **virtual nodes**.
