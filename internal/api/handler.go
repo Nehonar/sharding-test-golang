@@ -32,36 +32,36 @@ func (h *Handler) handleCreateUser(w http.ResponseWriter, r *http.Request) {
 
 	err := json.NewDecoder(r.Body).Decode(&req)
 	if err != nil {
-		response.Error(w, http.StatusBadRequest, "JSON inválido", http.StatusBadRequest)
+		response.Error(w, http.StatusBadRequest, "Invalid JSON", http.StatusBadRequest)
 		return
 	}
 
 	err = h.service.CreateUser(r.Context(), req.User, req.Password)
 	if err != nil {
-		response.Error(w, http.StatusCreated, "Error al guardar usuario", http.StatusInternalServerError)
+		response.Error(w, http.StatusCreated, "Error saving user", http.StatusInternalServerError)
 		return
 	}
 
-	response.JSON(w, http.StatusCreated, "Usuario creado correctamente", nil, http.StatusCreated)
+	response.JSON(w, http.StatusCreated, "User created successfully", nil, http.StatusCreated)
 }
 
 func (h *Handler) handleGetUser(w http.ResponseWriter, r *http.Request) {
 	username := r.URL.Query().Get("user")
 	if username == "" {
-		response.Error(w, http.StatusBadRequest, "El parámetro 'user' es obligatorio", 400)
+		response.Error(w, http.StatusBadRequest, "The 'user' parameter is required", 400)
 		return
 	}
 
 	u, err := h.service.GetUser(r.Context(), username)
 	if err != nil {
-		response.Error(w, http.StatusInternalServerError, "Error al obtener el usuario", 500)
+		response.Error(w, http.StatusInternalServerError, "Error retrieving user", 500)
 		return
 	}
 
 	if u == nil {
-		response.Error(w, http.StatusNotFound, "Usuario no encontrado", 404)
+		response.Error(w, http.StatusNotFound, "User not found", 404)
 		return
 	}
 
-	response.JSON(w, http.StatusOK, "Usuario encontrado", u, 200)
+	response.JSON(w, http.StatusOK, "User found", u, 200)
 }

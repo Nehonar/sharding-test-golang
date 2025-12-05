@@ -50,7 +50,7 @@ func (s *Shard) GetUser(ctx context.Context, username string) (*models.User, err
 	var u models.User
 	err := row.Scan(&u.ID, &u.Username, &u.Password)
 	if err == sql.ErrNoRows {
-		return nil, nil // usuario NO encontrado (esto no es error)
+		return nil, nil
 	}
 	if err != nil {
 		return nil, err
