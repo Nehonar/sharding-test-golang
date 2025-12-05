@@ -102,17 +102,19 @@ This project is part of a portfolio designed to demostrate:
 
 ## 6-Box Architecture Diagram
 
-       Client
-         ↓
-     API Handler
-         ↓
+```bash
+        Client
+          ↓
+      API Handler
+          ↓
  Service (Business Logic)
-         ↓
+          ↓
   Router (Shard Selector)
-         ↓
+          ↓
 Shard (PostgreSQL Instance)
-         ↓
-      Database
+          ↓
+       Database
+```
 
 ### Description
 
