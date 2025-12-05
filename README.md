@@ -95,3 +95,35 @@ This project is part of a portfolio designed to demostrate:
 - Knowledge of real-world architectural patterns
 
 - Ability to document and communicate system design effectively
+
+
+---
+
+
+## 6-Box Architecture Diagram
+
+       Client
+         ↓
+     API Handler
+         ↓
+ Service (Business Logic)
+         ↓
+  Router (Shard Selector)
+         ↓
+Shard (PostgreSQL Instance)
+         ↓
+      Database
+
+### Description
+
+- **Client**: Sends HTTP requests to create or fetch users.  
+- **API Handler**: Translates HTTP/JSON into domain calls.  
+- **Service**: Applies business rules and coordinates actions.  
+- **Router**: Selects the appropriate shard using a deterministic hash.  
+- **Shard**: Executes SQL queries against its assigned PostgreSQL instance.  
+- **Database**: Stores user records for the shard.
+
+
+---
+
+
