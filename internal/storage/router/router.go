@@ -3,7 +3,7 @@ package router
 import (
 	"context"
 	"crypto/sha256"
-	"sharding-test-golang/internal/models"
+	"go-sharding-basic/internal/models"
 )
 
 type UserStorage interface {

@@ -2,9 +2,9 @@ package handler
 
 import (
 	"encoding/json"
+	"go-sharding-basic/internal/api/response"
+	"go-sharding-basic/internal/user"
 	"net/http"
-	"sharding-test-golang/internal/api/response"
-	"sharding-test-golang/internal/user"
 )
 
 type Handler struct {

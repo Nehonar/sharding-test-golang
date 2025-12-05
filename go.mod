@@ -1,4 +1,4 @@
-module sharding-test-golang
+module go-sharding-basic
 
 go 1.18
 

@@ -1,12 +1,12 @@
 package main
 
 import (
+	handler "go-sharding-basic/internal/api"
+	"go-sharding-basic/internal/storage/router"
+	"go-sharding-basic/internal/storage/shards"
+	"go-sharding-basic/internal/user"
 	"log"
 	"net/http"
-	handler "sharding-test-golang/internal/api"
-	"sharding-test-golang/internal/storage/router"
-	"sharding-test-golang/internal/storage/shards"
-	"sharding-test-golang/internal/user"
 
 	_ "github.com/lib/pq"
 )

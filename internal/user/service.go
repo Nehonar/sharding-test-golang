@@ -2,8 +2,8 @@ package user
 
 import (
 	"context"
-	"sharding-test-golang/internal/models"
-	"sharding-test-golang/internal/storage/router"
+	"go-sharding-basic/internal/models"
+	"go-sharding-basic/internal/storage/router"
 )
 
 type UserService interface {

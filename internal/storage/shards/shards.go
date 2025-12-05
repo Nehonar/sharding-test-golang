@@ -3,8 +3,8 @@ package shards
 import (
 	"context"
 	"database/sql"
+	"go-sharding-basic/internal/models"
 	"log"
-	"sharding-test-golang/internal/models"
 )
 
 type Shard struct {
