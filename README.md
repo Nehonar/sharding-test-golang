@@ -149,29 +149,6 @@ The system provides user creation and retrieval through a sharded PostgreSQL bac
 
 ### High-Level Context Diagram (text form)
 
-```sql
-             +------------------------+
-             |        Client          |
-             |  (Browser/Postman/cURL)|
-             +-----------+------------+
-                         |
-            HTTP Requests (Create/Get User)
-                         |
-             +-----------v------------+
-             |  Sharded User Service  |
-             |  (System Under Design) |
-             +-----------+------------+
-                         |
-    +-------------+----------------------------+
-    |       |            |              |      |
-    |       |            |              |      |
-    +-------v----+ +-----v------+ +-----v------+
-    | PostgreSQL | | PostgreSQL | | PostgreSQL |
-    |   Shard 0  | |   Shard 1  | |   Shard 2  |
-    +------------+ +------------+ +------------+
-       (Data is deterministically distributed)
-```
-
 ```mermaid
 graph TD
     A[Client] --> B[API Layer]
