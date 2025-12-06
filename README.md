@@ -174,7 +174,7 @@ The system provides user creation and retrieval through a sharded PostgreSQL bac
 
 ```mermaid
 graph TD
-    A[Client (Browser/Postman/cURL)] --> B[API Layer]
+    A[Client] --> B[API Layer]
     B --> C[Shared User Service]
     C --> D[PostgresSQL shard 0..2]
 ```
