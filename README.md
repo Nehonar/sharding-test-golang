@@ -154,9 +154,9 @@ graph TD
     A[Client] --> B[API Layer]
     B --> C[Shared User Service]
     C --> D{Router: hash user_id % N}
-    D -->|0| E[Shard 0 (PostgreSQL)]
-    D -->|1| F[Shard 1 (PostgreSQL)]
-    D -->|2| G[Shard 2 (PostgreSQL)]
+    D -->|0| E[Shard 0 PostgreSQL]
+    D -->|1| F[Shard 1 PostgreSQL]
+    D -->|2| G[Shard 2 PostgreSQL]
 ```
 
 ### Summary
