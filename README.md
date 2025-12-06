@@ -176,7 +176,9 @@ The system provides user creation and retrieval through a sharded PostgreSQL bac
 graph TD
     A[Client] --> B[API Layer]
     B --> C[Shared User Service]
-    C --> D[PostgresSQL shard 0..2]
+    C --> D[PostgresSQL shard 0]
+    C --> E[PostgresSQL shard 1]
+    C --> F[PostgresSQL shard 2]
 ```
 
 ### Summary
